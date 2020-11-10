@@ -1,0 +1,15 @@
+import request from '@/utils/request.js'
+export const getAllVideo = () => request.get('/video/list',{})
+export const login = ({username,password}) => request.post('/login',{username,password})
+export const register = ({username,password}) => request.post('/register',{username,password})
+export const getShort = () => request.get('/video/shortlist')
+export const typeoneById = ({id}) => request.get('/video/typeoneById',{id})
+export const typeone = ({flag}) => request.get('/video/typeone',{flag})
+export const spin = ({id}) => request.get('/love/add',{id})
+export const getspinlist = () => request.get('/love/lovelist')
+export const getCore = ({tel}) => request.get('/users/getCore',{tel})
+export const audio = () => request.get('/audio/audioList')
+export const banner = () => request.get('/banner/bannerlist')
+export const submitmessage = ({content,tel}) => request.post('/message/add',{content,tel})
+//获取收藏列表分页
+export const pagelove = ({limitNum,pageCode}) => request.get('/love/loveArr',{limitNum,pageCode})

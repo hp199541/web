@@ -1,28 +1,53 @@
 <template>
-  <div id="app">
-    <img alt="Vue logo" src="./assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
+  <div class="appmain">
+    <Top></Top>
+    <AppMain :video = 'videolist'></AppMain>
   </div>
 </template>
-
 <script>
-import HelloWorld from './components/HelloWorld.vue'
-
+import Top from '@/components/top/top.vue'
+import AppMain from '@/views/layout.vue'
+import { getAllVideo } from '@/api/index'
+import {setScrolltop,getScrolltop} from '@/utils/token.js'
 export default {
-  name: 'App',
-  components: {
-    HelloWorld
+    components:{
+    Top,
+    AppMain
+  },
+  data () {
+    return {
+      videolist:[]
+    }
+  },
+  created () {
+    this.$nextTick(() => {
+      setTimeout(() => {
+        const lastscrollTop = getScrolltop()
+        document.getElementsByClassName('appmain')[0].scrollTop = lastscrollTop*1  
+      },500)
+    })
+    getAllVideo().then(res => {
+      if(res.data.status_code == 200) {
+        this.videolist = res.data.video_list
+      }
+    })
+  },
+  methods:{
+    getScrolltop () {
+      var Appmain = document.getElementsByClassName('appmain')[0]
+      var scrollTop = Appmain.scrollTop
+      setScrolltop(scrollTop)
+    }
+  },
+  mounted () {
+    var Appmain = document.getElementsByClassName('appmain')[0]
+    Appmain.addEventListener('scroll',this.getScrolltop)
   }
 }
 </script>
-
-<style>
-#app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+<style lang="scss">
+.appmain{
+  height: 100vh;
+  overflow-y: auto;
 }
 </style>
